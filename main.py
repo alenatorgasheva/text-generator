@@ -25,6 +25,17 @@
 # связи     - значения
 def text_generator():
     file = input('Имя файла: ')
+    ptr = 0
+    while ptr == 0:
+        try:
+            with open(file, 'r'):
+                pass
+        except FileNotFoundError:
+            print('Файл {} не найден.'.format(file))
+            file = input('Введите имя файла: ')
+            ptr = 0
+        else:
+            ptr = 1
     number = input('Количество генерируемых предложений: ')
     lst_of_words = []
     lst_of_start_words = []
