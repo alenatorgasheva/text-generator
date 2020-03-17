@@ -27,6 +27,7 @@ def text_generator():
     file = input('Имя файла: ')
     number = input('Количество генерируемых предложений: ')
     lst_of_words = []
+    lst_of_start_words = []
     text = ''
     with open(file, 'r') as file_in:
         for string in file_in.readlines():
@@ -39,6 +40,13 @@ def text_generator():
                 word = ''
             else:
                 word += i
+
+        for words in lst_of_words:
+            for letter in words:
+                if letter.isupper():
+                    lst_of_start_words.append(words)
+
     # text - весь текст из файла, \n удалены и заменены на пробел
     # lst_of_words - списочек всех слов из текста, знаки препинания сохранены (порезано по пробелам)
+    # lst_of_start_words - список старт-слов
     print(text, lst_of_words)
