@@ -23,8 +23,38 @@
 
 # звенья    - ключи
 # связи     - значения
+
+
+def unique_words(lst_of_words):
+    # lst_of_unique_words - списочек уникальных слов
+    # lst_of_words - список всех слов
+    lst_of_unique_words = []
+    for word in lst_of_words:
+        if word not in lst_of_unique_words:
+            lst_of_unique_words.append(word)
+    return lst_of_unique_words
+
+
+def generator(number_of_sentences, start_words, lst_of_words, stop_words):
+    # number_of_sentences - колво предложений
+    # start_words - список старт слов
+    # lst_of_words - словарь слов
+    # stop_words - список стоп слов
+
+    import random
+    for _ in range(number_of_sentences):
+        word = start_words[random.randint(0, len(start_words) - 1)]
+        counter = 1
+        while word[-1] != '.' and counter != 19:
+            print(word, end=' ')
+            word = lst_of_words[word][random.randint(0, len(lst_of_words[word]) - 1)]
+            counter += 1
+        if counter == 19:
+            print(stop_words[random.randint(0, len(stop_words) - 1)])
+
+
 def text_generator():
-    file = input('Имя файла: ')
+    file = input()
     ptr = 0
     while ptr == 0:
         try:
@@ -60,4 +90,7 @@ def text_generator():
     # text - весь текст из файла, \n удалены и заменены на пробел
     # lst_of_words - списочек всех слов из текста, знаки препинания сохранены (порезано по пробелам)
     # lst_of_start_words - список старт-слов
-    print(text, lst_of_words)
+    print(text, lst_of_words, lst_of_start_words, sep='\n')
+
+
+text_generator()
