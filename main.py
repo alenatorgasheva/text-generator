@@ -35,6 +35,26 @@ def unique_words(lst_of_words):
     return lst_of_unique_words
 
 
+def initial_words(lst_of_words):
+    # lst_of_start_words - списочек старт-слов
+    # lst_of_words - список всех слов
+    start_words = []
+    for words in lst_of_words:
+        if words[0].isupper():
+            start_words.append(words)
+    return start_words
+
+
+def final_words(lst_of_words):
+    # lst_of_final_words - списочек конечных слов
+    # lst_of_words - список всех слов
+    stop_words = []
+    for words in lst_of_words:
+        if words[-1] == '.' or words[-1] == '!' or words[-1] == '?':
+            stop_words.append(words)
+    return stop_words
+
+
 def generator(number_of_sentences, start_words, lst_of_words, stop_words):
     # number_of_sentences - колво предложений
     # start_words - список старт слов
@@ -68,7 +88,6 @@ def text_generator():
             ptr = 1
     number = input('Количество генерируемых предложений: ')
     lst_of_words = []
-    lst_of_start_words = []
     text = ''
     with open(file, 'r') as file_in:
         for string in file_in.readlines():
@@ -82,15 +101,9 @@ def text_generator():
             else:
                 word += i
 
-        for words in lst_of_words:
-            for letter in words:
-                if letter.isupper():
-                    lst_of_start_words.append(words)
-
     # text - весь текст из файла, \n удалены и заменены на пробел
     # lst_of_words - списочек всех слов из текста, знаки препинания сохранены (порезано по пробелам)
-    # lst_of_start_words - список старт-слов
-    print(text, lst_of_words, lst_of_start_words, sep='\n')
+    print(text, lst_of_words, sep='\n')
 
 
 text_generator()
