@@ -1,46 +1,76 @@
 # Case - study
 
-# This program
+# This program generates a set number of sentences using a text file and
+# Markov's chains.
 
 # Developers : Daniel A.         (%),
 #              Zemtseva A.       (%),
 #              Torgasheva A.     (%).
 
-# Tasks:
-#       АЛИНА
-#   - все слова (список)
-#   - /n заменить на пробел
-#   - оформление программы (код ревью, комменты и т.д.)
-#   - локализация
-#
-#       НАСТЯ
-#   - список старт-слов
-#   - слова после уникального (словарь: ключи - из списка уникальных слов, значение - слово в тексте после ключа)
-#
-#       АЛЁНА
-#   - уникальные слова (список)
-#   - случайный вывод (не забыть про конец предложения!)
 
-# звенья    - ключи
-# связи     - значения
+import random
+
+# Choosing of language.
+language = input('Choose your language:\n1. English\n2. Russian\n3.'
+                 ' French\n').lower()
+while True:
+    if language == 'english' or language == 'en' or \
+            language == 'e' or language == '1':
+        import lc_en as lc
+
+        break
+    elif language == 'russian' or language == 'ru' or \
+            language == 'r' or language == '2':
+        import lc_ru as lc
+
+        break
+    elif language == 'french' or language == 'fr' or \
+            language == 'f' or language == '3':
+        import lc_fr as lc
+
+        break
+    language = input('Please, choose language from proposed: ')
 
 
 def open_file():
-    file = 'example.txt'
-    ptr = 0
+    """
+    Function that checks whether the entered name of file is correct.
+    :return: correct name of file
+    """
+    file = input(lc.TXT_INPUT_FILE_NAME)
     while True:
         try:
             with open(file, 'r'):
                 pass
         except FileNotFoundError:
-            print('Файл {} не найден.'.format(file))
-            file = input('Введите имя файла: ')
-            ptr = 0
+            print(lc.TXT_FILE_NOT_FOUND.format(file))
+            file = input(lc.TXT_INPUT_FILE_NAME)
         else:
             return file
 
 
+def input_number():
+    """
+    Function that checks whether the entered number of sentences is correct.
+    :return: correct number of sentences
+    """
+    number_of_sentences = input(lc.TXT_INPUT_NUMBER_OF_SENTENCES)
+    while True:
+        try:
+            number_of_sentences = int(number_of_sentences)
+        except ValueError:
+            print(lc.TXT_ERROR)
+            number_of_sentences = input(lc.TXT_INPUT_NUMBER_OF_SENTENCES)
+        else:
+            return number_of_sentences
+
+
 def text_to_words(file):
+    """
+    Function that creates a list of all words from the text.
+    :param file: name of the file to use
+    :return: list of all words from the text
+    """
     all_words = []
     text = ''
     with open(file, 'r') as file_in:
@@ -58,8 +88,11 @@ def text_to_words(file):
 
 
 def unique_words(lst_of_words):
-    # lst_of_unique_words - списочек уникальных слов
-    # lst_of_words - список всех слов
+    """
+    Function that creates a list of unique words from list of all words.
+    :param lst_of_words: list of all words from the text
+    :return: list of unique words from the text
+    """
     lst_of_unique_words = []
     for word in lst_of_words:
         if word not in lst_of_unique_words:
@@ -68,8 +101,11 @@ def unique_words(lst_of_words):
 
 
 def initial_words(lst_of_words):
-    # lst_of_start_words - списочек старт-слов
-    # lst_of_words - список всех слов
+    """
+    Function that creates a list of start-words from list of all words.
+    :param lst_of_words: list of all words from the text
+    :return: list start-words from the text
+    """
     start_words = []
     for words in lst_of_words:
         if words[0].isupper():
@@ -78,8 +114,11 @@ def initial_words(lst_of_words):
 
 
 def final_words(lst_of_words):
-    # lst_of_final_words - списочек конечных слов
-    # lst_of_words - список всех слов
+    """
+    Function that creates a list of final words from list of all words.
+    :param lst_of_words: list of all words from the text
+    :return: list stop-words from the text
+    """
     stop_words = []
     for words in lst_of_words:
         if words[-1] == '.' or words[-1] == '!' or words[-1] == '?':
@@ -88,6 +127,14 @@ def final_words(lst_of_words):
 
 
 def dictionary(lst_of_unique_words, all_words):
+    """
+    Function which creates a dictionary, in which the key is a unique word
+     from the text (link) and the value is a list of words that follow it
+     in the text (connections).
+    :param lst_of_unique_words: list of unique words
+    :param all_words: list of all words from the text
+    :return: dictionary of links and connections
+    """
     links_and_connections = {}
     for word in lst_of_unique_words:
         following_words = []
@@ -98,19 +145,23 @@ def dictionary(lst_of_unique_words, all_words):
     return links_and_connections
 
 
-def generator(number_of_sentences, start_words, links_and_connections, stop_words):
-    # number_of_sentences - колво предложений
-    # start_words - список старт слов
-    # lst_of_words - словарь слов
-    # stop_words - список стоп слов
-
-    import random
+def generator(number_of_sentences, start_words, links_and_connections,
+              stop_words):
+    """
+    Function that generates sentences using Markov's chains.
+    :param number_of_sentences: number of sentences to generate
+    :param start_words: list start-words from the text
+    :param links_and_connections:
+    :param stop_words: list stop-words from the text
+    :return: None
+    """
     for _ in range(number_of_sentences):
         word = start_words[random.randint(0, len(start_words) - 1)]
         counter = 1
         print(word, end=' ')
         while word[-1] != '.' and counter < 19:
-            word = links_and_connections[word][random.randint(0, len(links_and_connections[word]) - 1)]
+            word = links_and_connections[word][random.randint(0,
+                len(links_and_connections[word]) - 1)]
             counter += 1
             print(word, end=' ')
         if counter == 19 and word[-1] != '.':
@@ -121,14 +172,16 @@ def generator(number_of_sentences, start_words, links_and_connections, stop_word
 
 def main():
     file = open_file()
+    number_of_sentences = input_number()
 
     all_words = text_to_words(file)
     start_words = initial_words(all_words)
     stop_words = final_words(all_words)
     links_and_connections = dictionary(unique_words(all_words), all_words)
 
-    number_of_sentences = int(input('Введите число предложений: '))
-    generator(number_of_sentences, start_words, links_and_connections, stop_words)
+    generator(number_of_sentences, start_words, links_and_connections,
+              stop_words)
 
 
-main()
+if __name__ == '__main__':
+    main()
