@@ -73,6 +73,16 @@ def generator(number_of_sentences, start_words, lst_of_words, stop_words):
             print(stop_words[random.randint(0, len(stop_words) - 1)])
 
 
+def dictionary(lst_of_unique_words, lst_of_words):
+    dict = {}
+    for i in range(len(lst_of_unique_words)):
+        lst = []
+        for j in range(len(lst_of_words)):
+            if i == j:
+                lst.append(lst_of_words[j + 1])
+        dict[lst_of_unique_words[i]] = lst
+
+
 def text_generator():
     file = input()
     ptr = 0
