@@ -4,7 +4,7 @@
 # Markov's chains.
 
 # Developers : Daniel A.         (35%),
-#              Zemtseva A.       (%),
+#              Zemtseva A.       (30%),
 #              Torgasheva A.     (%).
 
 
