@@ -62,6 +62,7 @@ def input_number():
             print(lc.TXT_ERROR)
             number_of_sentences = input(lc.TXT_INPUT_NUMBER_OF_SENTENCES)
         else:
+            print()
             return number_of_sentences
 
 
@@ -108,7 +109,7 @@ def initial_words(lst_of_words):
     """
     start_words = []
     for words in lst_of_words:
-        if words[0].isupper():
+        if words[0].isupper() and words.find('.') == -1:
             start_words.append(words)
     return start_words
 
@@ -121,7 +122,7 @@ def final_words(lst_of_words):
     """
     stop_words = []
     for words in lst_of_words:
-        if words[-1] == '.' or words[-1] == '!' or words[-1] == '?':
+        if words.find('.') != -1 or words.find('!') != -1 or words.find('?') != -1:
             stop_words.append(words)
     return stop_words
 
@@ -159,15 +160,22 @@ def generator(number_of_sentences, start_words, links_and_connections,
         word = start_words[random.randint(0, len(start_words) - 1)]
         counter = 1
         print(word, end=' ')
-        while word[-1] != '.' and counter < 19:
-            word = links_and_connections[word][random.randint(0,
-                len(links_and_connections[word]) - 1)]
-            counter += 1
-            print(word, end=' ')
-        if counter == 19 and word[-1] != '.':
-            print(stop_words[random.randint(0, len(stop_words) - 1)])
-        else:
-            print()
+        while True:
+            word = links_and_connections[word][random.randint(0, len(links_and_connections[word]) - 1)]
+            if word.find('.') != -1:
+                if counter >= 5:
+                    print(word)
+                    break
+                else:
+                    counter += 1
+                    print(word[:word.find('.')], end=' ')
+            else:
+                if counter < 19:
+                    counter += 1
+                    print(word, end=' ')
+                else:
+                    print(stop_words[random.randint(0, len(stop_words) - 1)])
+                    break
 
 
 def main():
