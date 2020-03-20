@@ -3,7 +3,7 @@
 # This program generates a set number of sentences using a text file and
 # Markov's chains.
 
-# Developers : Daniel A.         (%),
+# Developers : Daniel A.         (35%),
 #              Zemtseva A.       (%),
 #              Torgasheva A.     (%).
 
