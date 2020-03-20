@@ -5,7 +5,7 @@
 
 # Developers : Daniel A.         (35%),
 #              Zemtseva A.       (30%),
-#              Torgasheva A.     (%).
+#              Torgasheva A.     (40%).
 
 
 import random
